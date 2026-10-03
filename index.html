@@ -3,583 +3,845 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LD STORE | نظام الطلبات والدفع التلقائي</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
+    <title>مدرسة متوسطة الزهور - لوحة التحكم والإدارة</title>
+    <!-- خط تجوال من خطوط جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- أيقونات Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Cairo Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                            900: '#14532d',
-                            950: '#052e16',
-                        },
-                        darkbg: '#060d0a',
-                        cardbg: '#0f2219',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #060d0a; color: #e2e8f0; }
-        .green-glow { box-shadow: 0 0 20px rgba(34, 197, 94, 0.25); }
-        .custom-radio { accent-color: #22c55e; width: 18px; height: 18px; cursor: pointer; }
-        /* إخفاء أسهم الأرقام */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #059669;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* شريط معلومات التواصل العلوي */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.85rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .top-bar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .top-contact-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .top-contact-info a {
+            color: #e2e8f0;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .top-contact-info a:hover {
+            color: var(--accent-color);
+        }
+
+        /* الهيدر وشريط التنقل */
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .logo i {
+            color: var(--secondary-color);
+            font-size: 1.8rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #e2e8f0;
+            color: var(--primary-color);
+        }
+
+        .btn-toggle-admin {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-toggle-admin:hover {
+            background-color: #d97706;
+        }
+
+        /* الحاوية العامة */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            display: block;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(5, 150, 105, 0.8)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200') center/cover;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
+
+        /* أشرطة البحث */
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto 20px auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 38px 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* الشبكات الكروت */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 45px;
+            height: 45px;
+            background-color: #e0e7ff;
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .card-sub {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-action {
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover { opacity: 0.85; }
+        .btn-delete { background-color: var(--danger-color); }
+        .btn-edit { background-color: var(--accent-color); }
+
+        /* كروت الأخبار */
+        .news-img {
+            height: 160px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .news-date {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        /* لوحة التحكم (Admin Panel) */
+        #admin-section {
+            display: none;
+            background: #ffffff;
+            border: 2px dashed var(--accent-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .admin-box {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .admin-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .btn-add {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: #047857;
+        }
+
+        /* الفوتر */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-contacts {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-contacts a {
+            color: #f1f5f9;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .footer-contacts a:hover {
+            color: var(--accent-color);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body>
 
-    <!-- Header / Navbar -->
-    <header class="bg-cardbg/90 border-b border-brand-900/60 sticky top-0 z-40 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-            
-            <!-- Logo -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('store')">
-                <img src="https://cdn.discordapp.com/attachments/1300414999038001153/1555305946534649916/LD_STORE.png?backend=b2&ex=6ac00b09&is=6abeb989&hm=d36d2a2a9573dbc52a71b52bc4a05e537e5de6d61c7595f03ca2165bad9812f1&" alt="LD Store Logo" class="w-12 h-12 object-contain rounded-full border border-brand-500/30">
-                <div>
-                    <h1 class="font-black text-xl text-white">LD <span class="text-brand-500">STORE</span></h1>
-                    <p class="text-xs text-brand-400">متجر الخدمات والأكواد التلقائية</p>
-                </div>
+    <!-- شريط معلومات التواصل العلوي -->
+    <div class="top-bar">
+        <div class="top-bar-container">
+            <div>
+                <i class="fa-solid fa-school"></i> مرحباً بكم في الموقع الرسمي لـ مدرسة متوسطة الزهور
             </div>
-
-            <!-- Actions -->
-            <div class="flex items-center gap-2 sm:gap-4">
-                <button onclick="switchView('store')" class="text-gray-300 hover:text-brand-400 text-xs sm:text-sm font-bold px-2 py-1.5 rounded-lg">
-                    <i class="fa-solid fa-store ml-1"></i> المتجر
-                </button>
-
-                <button onclick="switchView('track')" class="bg-brand-900/40 border border-brand-700/50 hover:bg-brand-800/50 px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm text-brand-300 flex items-center gap-1">
-                    <i class="fa-solid fa-receipt text-brand-400"></i>
-                    <span>متابعة/استلام طلب</span>
-                </button>
-
-                <button onclick="openCart()" class="relative bg-brand-900/60 border border-brand-700 px-3 py-1.5 rounded-xl font-bold text-xs sm:text-sm text-brand-300 flex items-center gap-1">
-                    <i class="fa-solid fa-cart-shopping text-brand-400"></i>
-                    <span>السلة</span>
-                    <span id="cart-count" class="bg-brand-500 text-black font-extrabold text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-
-                <button onclick="openAdminModal()" class="bg-brand-600 hover:bg-brand-500 text-black px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold shadow-md green-glow flex items-center gap-1">
-                    <i class="fa-solid fa-user-shield text-xs"></i>
-                    <span>لوحة التحكم</span>
-                </button>
+            <div class="top-contact-info">
+                <a href="tel:+9660561583400"><i class="fa-solid fa-phone"></i> 0561583400</a>
+                <a href="mailto:samy7ii161@gmail.com"><i class="fa-solid fa-envelope"></i> samy7ii161@gmail.com</a>
             </div>
         </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-seedling"></i>
+                <span>مدرسة متوسطة الزهور</span>
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="scrollToSection('hero-sec')">الرئيسية</a></li>
+                <li><a onclick="scrollToSection('students-sec')">مؤوسس الموقع</a></li>
+                <li><a onclick="scrollToSection('teachers-sec')">المعلمون</a></li>
+                <li><a onclick="scrollToSection('news-sec')">الأخبار والفعاليات</a></li>
+            </ul>
+            <button class="btn-toggle-admin" onclick="toggleAdminPanel()">
+                <i class="fa-solid fa-sliders"></i> لوحة التحكم والتعديل
+            </button>
+        </nav>
     </header>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+    <div class="container">
 
-        <!-- Store View -->
-        <div id="store-view">
-            <div class="flex justify-between items-center gap-4 mb-6">
-                <h3 class="text-2xl font-black text-white flex items-center gap-2">
-                    <i class="fa-solid fa-boxes-stacked text-brand-500"></i> منتجات المتجر
-                </h3>
-            </div>
-
-            <!-- Products Grid -->
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Products dynamically rendered -->
-            </div>
-        </div>
-
-        <!-- Order Tracker View (استلام الكود) -->
-        <div id="track-view" class="hidden max-w-xl mx-auto">
-            <div class="bg-cardbg border border-brand-900 p-6 rounded-2xl shadow-xl">
-                <h3 class="text-xl font-black text-white mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass text-brand-500"></i> الاستلام ومتابعة حالة الطلب
-                </h3>
-                <p class="text-xs text-gray-400 mb-6">أدخل رقم الطلب الذي حصلت عليه بعد الدفع لفحص الحالة واستلام الكود عند الموافقة.</p>
-
-                <div class="flex gap-2 mb-6">
-                    <input type="text" id="track-order-id" placeholder="مثال: #ORD-8492" class="flex-1 bg-darkbg border border-brand-900 text-white font-mono rounded-xl px-4 py-3 text-sm outline-none focus:border-brand-500">
-                    <button onclick="checkOrderStatus()" class="bg-brand-600 hover:bg-brand-500 text-black font-black px-6 py-3 rounded-xl text-xs">فحص</button>
-                </div>
-
-                <!-- Result Card -->
-                <div id="track-result" class="hidden border rounded-xl p-5 bg-darkbg">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Admin View -->
-        <div id="admin-view" class="hidden">
-            <div class="flex justify-between items-center mb-8 border-b border-brand-900 pb-4">
-                <div>
-                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-user-shield text-brand-500"></i> لوحة تحكم الطلبات والمنتجات
-                    </h2>
-                    <p class="text-xs text-gray-400">مراجعة التحويلات، الموافقة على الطلبات، وإرسال الأكواد تلقائياً</p>
-                </div>
-                <button onclick="logoutAdmin()" class="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold">
-                    قفل اللوحة
-                </button>
-            </div>
-
-            <!-- Orders Management Section -->
-            <div class="bg-cardbg border border-brand-900/80 p-6 rounded-2xl mb-8">
-                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-brand-500"></i> قائمة الطلبات الواردة
-                </h3>
-                <div id="admin-orders-list" class="space-y-4">
-                    <!-- Orders Rendered via JS -->
-                </div>
-            </div>
-
-            <!-- Add Product Section -->
-            <div class="bg-cardbg border border-brand-900/80 p-6 rounded-2xl">
-                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-brand-500"></i> إضافة منتج جديد مع الكود الخاص به
-                </h3>
-                <form onsubmit="handleAddProduct(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">اسم المنتج</label>
-                        <input type="text" id="p-name" required placeholder="مثال: رتبة VIP فايت" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-3 text-sm outline-none focus:border-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">السعر ($)</label>
-                        <input type="number" step="0.01" id="p-price" required placeholder="15.00" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-3 text-sm outline-none focus:border-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">رابط الصورة (URL)</label>
-                        <input type="url" id="p-image" required placeholder="https://..." class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-3 text-sm outline-none focus:border-brand-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">الكود الرقمي الذي سيستلمه المشتري عند الموافقة</label>
-                        <input type="text" id="p-code" required placeholder="مثال: VIP-9920-KEY-X" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-3 text-sm font-mono outline-none focus:border-brand-500">
-                    </div>
-                    <div class="sm:col-span-2">
-                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-500 text-black font-black py-3 rounded-xl text-sm">
-                            حفظ المنتج
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
-
-    <!-- Shopping Cart & Direct Checkout Drawer -->
-    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-end">
-        <div class="w-full max-w-lg bg-cardbg h-full border-r border-brand-900 p-6 flex flex-col justify-between overflow-y-auto">
+        <!-- لوحة التعديل والتحكم -->
+        <section id="admin-section">
+            <h2 class="section-title"><i class="fa-solid fa-gear"></i> لوحة إدارة وتعديل المحتوى</h2>
             
-            <div id="cart-step-1">
-                <div class="flex justify-between items-center pb-4 border-b border-brand-900 mb-4">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-cart-shopping text-brand-500"></i> سلة الشراء والدفع
-                    </h3>
-                    <button onclick="closeCart()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="admin-grid">
+
+                <!-- إضافة / تعديل طالب -->
+                <div class="admin-box">
+                    <h3 id="std-form-title"><i class="fa-solid fa-user-plus"></i> إضافة طالب جديد</h3>
+                    <form id="student-form" onsubmit="saveStudent(event)">
+                        <input type="hidden" id="std-id">
+                        <div class="form-group">
+                            <label>اسم الطالب:</label>
+                            <input type="text" id="std-name" placeholder="مثال: محمد أحمد" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الصف / الفصل:</label>
+                            <input type="text" id="std-class" placeholder="مثال: ثاني متوسط (أ)" required>
+                        </div>
+                        <div class="form-group">
+                            <label>الهواية / الملاحظة:</label>
+                            <input type="text" id="std-note" placeholder="مثال: البرمجة والرياضيات">
+                        </div>
+                        <button type="submit" id="std-btn-submit" class="btn-add"><i class="fa-solid fa-plus"></i> حفظ الطالب</button>
+                    </form>
                 </div>
 
-                <!-- العناصر في السلة -->
-                <div id="cart-items" class="space-y-3 mb-6">
-                    <!-- Items -->
+                <!-- إضافة / تعديل معلم -->
+                <div class="admin-box">
+                    <h3 id="tch-form-title"><i class="fa-solid fa-chalkboard-user"></i> إضافة معلم جديد</h3>
+                    <form id="teacher-form" onsubmit="saveTeacher(event)">
+                        <input type="hidden" id="tch-id">
+                        <div class="form-group">
+                            <label>اسم المعلم:</label>
+                            <input type="text" id="tch-name" placeholder="مثال: أ. عبد الله الغامدي" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المادة الدراسية:</label>
+                            <input type="text" id="tch-subject" placeholder="مثال: مادة العلوم" required>
+                        </div>
+                        <button type="submit" id="tch-btn-submit" class="btn-add"><i class="fa-solid fa-plus"></i> حفظ المعلم</button>
+                    </form>
                 </div>
 
-                <!-- قسم اختيار طريقة الدفع -->
-                <div class="border-t border-brand-900 pt-4 space-y-4">
-                    
-                    <label class="block text-xs font-bold text-gray-300">اختر طريقة الدفع المناسبة:</label>
-
-                    <div class="space-y-2.5">
-                        
-                        <!-- 1. بطاقة مدى / فيزا -->
-                        <div class="border border-brand-500 bg-darkbg rounded-xl p-3 cursor-pointer transition" id="pay-box-card">
-                            <label class="flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="radio" name="pay_method" value="card" checked class="custom-radio" onchange="togglePayment('card')">
-                                    <span class="text-xs font-bold text-white">بطاقة ائتمانية / مدى</span>
-                                </div>
-                                <div class="flex gap-1">
-                                    <span class="text-[10px] font-black bg-blue-900 text-white px-1.5 py-0.5 rounded">VISA</span>
-                                    <span class="text-[10px] font-black bg-red-600 text-white px-1.5 py-0.5 rounded">MC</span>
-                                    <span class="text-[9px] font-black bg-green-600 text-white px-1.5 py-0.5 rounded">mada</span>
-                                </div>
-                            </label>
-
-                            <div id="form-card" class="mt-3 pt-3 border-t border-brand-900/80 space-y-2.5">
-                                <div>
-                                    <label class="text-[11px] text-gray-400 block mb-1">رقم البطاقة</label>
-                                    <input type="text" placeholder="0000 0000 0000 0000" id="card-num" class="w-full bg-cardbg border border-brand-900 text-white rounded-lg p-2 text-xs outline-none focus:border-brand-500 font-mono">
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div>
-                                        <label class="text-[11px] text-gray-400 block mb-1">الانتهاء (MM/YY)</label>
-                                        <input type="text" placeholder="12/28" id="card-exp" class="w-full bg-cardbg border border-brand-900 text-white rounded-lg p-2 text-xs text-center outline-none focus:border-brand-500 font-mono">
-                                    </div>
-                                    <div>
-                                        <label class="text-[11px] text-gray-400 block mb-1">رمز الأمان (CVV)</label>
-                                        <input type="password" placeholder="123" maxlength="4" id="card-cvv" class="w-full bg-cardbg border border-brand-900 text-white rounded-lg p-2 text-xs text-center outline-none focus:border-brand-500 font-mono">
-                                    </div>
-                                </div>
-                            </div>
+                <!-- إضافة / تعديل خبر أو فعالية -->
+                <div class="admin-box">
+                    <h3 id="news-form-title"><i class="fa-solid fa-newspaper"></i> إضافة خبر / فعالية</h3>
+                    <form id="news-form" onsubmit="saveNews(event)">
+                        <input type="hidden" id="news-id">
+                        <div class="form-group">
+                            <label>عنوان الخبر:</label>
+                            <input type="text" id="news-title" placeholder="عنوان الخبر أو النشاط" required>
                         </div>
-
-                        <!-- 2. Apple Pay -->
-                        <div class="border border-brand-900 bg-darkbg rounded-xl p-3 cursor-pointer hover:border-gray-700 transition" id="pay-box-apple">
-                            <label class="flex items-center justify-between cursor-pointer">
-                                <div class="flex items-center gap-2.5">
-                                    <input type="radio" name="pay_method" value="apple" class="custom-radio" onchange="togglePayment('apple')">
-                                    <span class="text-xs font-bold text-white">Apple Pay</span>
-                                </div>
-                                <div class="bg-white text-black px-2.5 py-0.5 rounded font-bold text-xs flex items-center gap-1">
-                                    <i class="fa-brands fa-apple text-sm"></i> Pay
-                                </div>
-                            </label>
-                            <div id="form-apple" class="mt-3 pt-3 border-t border-brand-900/80 hidden">
-                                <p class="text-[11px] text-gray-400 text-center">سيتم إتمام العملية بنقرة واحدة عبر خدمة Apple Pay الآمنة.</p>
-                            </div>
+                        <div class="form-group">
+                            <label>التاريخ:</label>
+                            <input type="text" id="news-date" placeholder="مثال: 15 أكتوبر 2026" required>
                         </div>
-
-                    </div>
-
-                    <!-- Buyer Information Inputs -->
-                    <div class="space-y-2.5 pt-2">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-300 mb-1">حساب الدسكورد (Discord Tag) <span class="text-red-400">*</span></label>
-                            <input type="text" id="buyer-discord" placeholder="مثال: user#1234 أو user" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-2.5 text-xs outline-none focus:border-brand-500">
+                        <div class="form-group">
+                            <label>الوصف والتفاصيل:</label>
+                            <textarea id="news-desc" rows="2" placeholder="تفاصيل الخبر..." required></textarea>
                         </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-gray-300 mb-1">رقم المرجع / الإيصال / اسم المحول <span class="text-red-400">*</span></label>
-                            <input type="text" id="buyer-reference" placeholder="أدخل رقم العملية أو اسم حسابك" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-2.5 text-xs outline-none focus:border-brand-500">
+                        <div class="form-group">
+                            <label>رابط الصورة (اختياري):</label>
+                            <input type="url" id="news-img" placeholder="https://example.com/image.jpg">
                         </div>
-                    </div>
-
-                    <!-- إجمالي السعر والزر -->
-                    <div class="flex justify-between items-center text-white font-black text-lg pt-2 border-t border-brand-900">
-                        <span>إجمالي المبلغ:</span>
-                        <span id="total-price" class="text-brand-400">$0.00</span>
-                    </div>
-
-                    <button onclick="submitOrder()" id="submit-btn" class="w-full bg-brand-500 hover:bg-brand-400 text-black font-black py-3 rounded-xl transition shadow-lg green-glow text-sm">
-                        تأكيد الطلب والدفع الآن
-                    </button>
+                        <button type="submit" id="news-btn-submit" class="btn-add"><i class="fa-solid fa-plus"></i> نشر الخبر</button>
+                    </form>
                 </div>
+
             </div>
+        </section>
 
-        </div>
+        <!-- الهيرو الترحيبي -->
+        <section class="hero" id="hero-sec">
+            <h1>أهلاً بكم في مدرسة متوسطة الزهور</h1>
+            <p>منصة تفاعلية لاستعراض طاقم المعلمين، وأحدث الفعاليات والأنشطة المدرسية.</p>
+        </section>
+
+        <!-- قسم مؤوسس الموقع -->
+        <section id="students-sec" style="margin-bottom: 50px;">
+            <h2 class="section-title">مؤوسس الموقع</h2>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="std-search" oninput="renderStudents()" placeholder="ابحث باسم الطالب أو الصف...">
+            </div>
+            <div class="grid-cards" id="students-container"></div>
+        </section>
+
+        <!-- قسم المعلمين -->
+        <section id="teachers-sec" style="margin-bottom: 50px;">
+            <h2 class="section-title">طاقم المعلمين</h2>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="tch-search" oninput="renderTeachers()" placeholder="ابحث باسم المعلم أو المادة...">
+            </div>
+            <div class="grid-cards" id="teachers-container"></div>
+        </section>
+
+        <!-- قسم الأخبار والفعاليات -->
+        <section id="news-sec" style="margin-bottom: 50px;">
+            <h2 class="section-title">الأخبار والفعاليات</h2>
+            <div class="grid-cards" id="news-container"></div>
+        </section>
+
     </div>
 
-    <!-- Admin Login Modal -->
-    <div id="admin-login-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-        <div class="bg-cardbg border border-brand-700 w-full max-w-sm rounded-2xl p-6 shadow-2xl text-center">
-            <h3 class="text-xl font-black text-white mb-2">دخول لوحة التحكم</h3>
-            <p class="text-xs text-gray-400 mb-4">كلمة المرور الافتراضية: <code class="text-brand-400 font-bold">*****</code></p>
-            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                <input type="password" id="admin-pass-input" required placeholder="كلمة المرور" class="w-full bg-darkbg border border-brand-900 text-white rounded-xl p-3 text-center outline-none">
-                <button type="submit" class="w-full bg-brand-600 text-black font-black py-2.5 rounded-xl text-xs">دخول</button>
-            </form>
+    <!-- الفوتر مع تفاصيل التواصل -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-contacts">
+                <a href="tel:+9660561583400"><i class="fa-solid fa-phone" style="color: var(--accent-color);"></i> هاتف المدرسة:0561583400</a>
+                <a href="mailto:samy7ii161@gmail.com"><i class="fa-solid fa-envelope" style="color: var(--accent-color);"></i> البريد الإلكتروني: samy7ii161@gmail.com</a>
+            </div>
+            <p>&copy; 2026 جميع الحقوق محفوظة - مدرسة متوسطة الزهور</p>
         </div>
-    </div>
+    </footer>
 
-    <!-- JavaScript Logic -->
+    <!-- البرمجة والمنطق التفاعلي -->
     <script>
-        const DEFAULT_PASS = "admin123";
+        const ADMIN_PASSWORD = "1234";
         let isAdminLoggedIn = false;
-        let selectedPaymentMethod = 'card';
 
-        const defaultProducts = [
-            { id: 1, name: "رتبة VIP الذبيحة", price: 20.00, image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500&q=80", code: "VIP-KILLER-9921-KEY" },
-            { id: 2, name: "حزمة أسلحة الفايت المحسنة", price: 12.00, image: "https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=500&q=80", code: "WEAPON-PACK-5510-KEY" }
+        const defaultStudents = [
+            { id: 1, name: "علي الشمري", class: "ثاني متوسط (أ)", note: "متفوق في الرياضيات" },
+            { id: 2, name: "عمر خالد", class: "ثاني متوسط (أ)", note: "قائد النشاط الرياضي" }
         ];
 
-        let products = JSON.parse(localStorage.getItem('ld_products')) || defaultProducts;
-        let orders = JSON.parse(localStorage.getItem('ld_orders')) || [];
-        let cart = JSON.parse(localStorage.getItem('ld_cart')) || [];
+        const defaultTeachers = [
+            { id: 1, name: "أ. سعد القحطاني", subject: "معلم العلوم" },
+            { id: 2, name: "أ. فهد الدوسري", subject: "معلم اللغة العربية" }
+        ];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            updateCartUI();
-        });
-
-        function saveProducts() { localStorage.setItem('ld_products', JSON.stringify(products)); }
-        function saveOrders() { localStorage.setItem('ld_orders', JSON.stringify(orders)); }
-        function saveCart() { localStorage.setItem('ld_cart', JSON.stringify(cart)); }
-
-        function switchView(view) {
-            document.getElementById('store-view').classList.add('hidden');
-            document.getElementById('track-view').classList.add('hidden');
-            document.getElementById('admin-view').classList.add('hidden');
-
-            if (view === 'store') document.getElementById('store-view').classList.remove('hidden');
-            if (view === 'track') document.getElementById('track-view').classList.remove('hidden');
-            if (view === 'admin') {
-                if (!isAdminLoggedIn) { openAdminModal(); return; }
-                document.getElementById('admin-view').classList.remove('hidden');
-                renderAdminOrders();
+        const defaultNews = [
+            { 
+                id: 1, 
+                title: "تكريم الطلاب المتفوقين", 
+                date: "15 أكتوبر 2026", 
+                desc: "أقامت إدارة المدرسة حفل تكريم لمؤوسس الموقع المتميزين.",
+                img: "https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=600"
             }
-        }
+        ];
 
-        function renderProducts() {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '';
-            products.forEach(p => {
-                grid.innerHTML += `
-                    <div class="bg-cardbg border border-brand-900 rounded-2xl overflow-hidden p-4 flex flex-col justify-between">
-                        <div>
-                            <img src="${p.image}" class="w-full h-40 object-cover rounded-xl mb-3">
-                            <h4 class="font-bold text-white text-lg">${p.name}</h4>
-                            <p class="text-brand-400 font-black text-xl mt-1">$${p.price.toFixed(2)}</p>
-                        </div>
-                        <button onclick="addToCart(${p.id})" class="w-full mt-4 bg-brand-600 hover:bg-brand-500 text-black font-extrabold py-2 rounded-xl text-xs">
-                            <i class="fa-solid fa-cart-plus ml-1"></i> إضافة للسلة
-                        </button>
-                    </div>
-                `;
-            });
-        }
+        let students = JSON.parse(localStorage.getItem('alzahoor_students')) || defaultStudents;
+        let teachers = JSON.parse(localStorage.getItem('alzahoor_teachers')) || defaultTeachers;
+        let news = JSON.parse(localStorage.getItem('alzahoor_news')) || defaultNews;
 
-        function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            const existing = cart.find(item => item.id === id);
-            if (existing) { existing.qty++; } else { cart.push({ ...product, qty: 1 }); }
-            saveCart();
-            updateCartUI();
-            openCart();
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            saveCart();
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-            const container = document.getElementById('cart-items');
-            container.innerHTML = '';
-            let total = 0;
-            cart.forEach(item => {
-                total += item.price * item.qty;
-                container.innerHTML += `
-                    <div class="flex items-center justify-between bg-darkbg p-3 rounded-xl border border-brand-900">
-                        <div>
-                            <h5 class="text-xs font-bold text-white">${item.name}</h5>
-                            <span class="text-xs text-brand-400 font-bold">$${item.price} (x${item.qty})</span>
-                        </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-400 text-xs"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                `;
-            });
-
-            document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
-        }
-
-        function togglePayment(method) {
-            selectedPaymentMethod = method;
-            const methods = ['card', 'apple'];
-
-            methods.forEach(m => {
-                document.getElementById(`form-${m}`).classList.add('hidden');
-                const box = document.getElementById(`pay-box-${m}`);
-                box.classList.remove('border-brand-500');
-                box.classList.add('border-brand-900');
-            });
-
-            document.getElementById(`form-${method}`).classList.remove('hidden');
-            const activeBox = document.getElementById(`pay-box-${method}`);
-            activeBox.classList.remove('border-brand-900');
-            activeBox.classList.add('border-brand-500');
-
-            const submitBtn = document.getElementById('submit-btn');
-            if (method === 'apple') submitBtn.innerHTML = '<i class="fa-brands fa-apple text-base ml-1"></i> الدفع باستخدام Apple Pay';
-            else submitBtn.innerHTML = 'تأكيد الطلب والدفع الآن';
-
-            updateCartUI();
-        }
-
-        function submitOrder() {
-            const discord = document.getElementById('buyer-discord').value.trim();
-            const reference = document.getElementById('buyer-reference').value.trim();
-
-            if (cart.length === 0) return alert('السلة فارغة!');
-            if (!discord || !reference) return alert('يرجى كتابة اسم الدسكورد ورقم مرجع الإيصال/العملية!');
-
-            const orderId = '#ORD-' + Math.floor(1000 + Math.random() * 9000);
-            const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-            let methodTitle = selectedPaymentMethod === 'apple' ? 'Apple Pay' : 'بطاقة ائتمانية / مدى';
-
-            const newOrder = {
-                id: orderId,
-                discord: discord,
-                reference: reference,
-                method: methodTitle,
-                items: [...cart],
-                total: total,
-                status: 'pending',
-                codes: cart.map(item => ({ product: item.name, code: item.code })),
-                date: new Date().toLocaleString('ar-SA')
-            };
-
-            orders.unshift(newOrder);
-            saveOrders();
-
-            cart = [];
-            saveCart();
-            updateCartUI();
-            closeCart();
-
-            alert(`تم إرسال طلبك بنجاح!\n\nرقم طلبك هو: ${orderId}\nوسيلة الدفع: ${methodTitle}\nيرجى الاحتفاظ برقم الطلب لاستلام الكود من قسم "متابعة/استلام طلب".`);
-            switchView('track');
-            document.getElementById('track-order-id').value = orderId;
-            checkOrderStatus();
-        }
-
-        function checkOrderStatus() {
-            const inputId = document.getElementById('track-order-id').value.trim();
-            const resultBox = document.getElementById('track-result');
-            resultBox.classList.remove('hidden');
-
-            const order = orders.find(o => o.id === inputId);
-
-            if (!order) {
-                resultBox.innerHTML = `<p class="text-red-400 font-bold text-center text-xs">رقم الطلب غير موجود!</p>`;
-                return;
-            }
-
-            let statusBadge = '';
-            let content = '';
-
-            if (order.status === 'pending') {
-                statusBadge = `<span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/30 text-xs px-2.5 py-1 rounded-lg font-bold">قيد المراجعة</span>`;
-                content = `<p class="text-xs text-gray-400 mt-2">طلبك قيد المراجعة حالياً من قبل الإدارة. يرجى العودة لاحقاً للحصول على الكود.</p>`;
-            } else if (order.status === 'approved') {
-                statusBadge = `<span class="bg-brand-500/10 text-brand-400 border border-brand-500/30 text-xs px-2.5 py-1 rounded-lg font-bold">تمت الموافقة / مكتمل</span>`;
-                content = `
-                    <div class="mt-4 bg-brand-950/40 border border-brand-500/40 p-4 rounded-xl">
-                        <p class="text-xs text-brand-300 font-bold mb-2">الأكواد الخاصة بطلبك:</p>
-                        ${order.codes.map(c => `
-                            <div class="mb-2">
-                                <span class="text-xs text-gray-400 block">${c.product}:</span>
-                                <code class="text-brand-400 font-mono font-black text-sm block bg-darkbg p-2 rounded border border-brand-900">${c.code}</code>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            } else if (order.status === 'rejected') {
-                statusBadge = `<span class="bg-red-500/10 text-red-400 border border-red-500/30 text-xs px-2.5 py-1 rounded-lg font-bold">مرفوض</span>`;
-                content = `<p class="text-xs text-red-400 mt-2">تم رفض الطلب، قد يكون سبب ذلك عدم تطابق بيانات التحويل.</p>`;
-            }
-
-            resultBox.innerHTML = `
-                <div class="flex justify-between items-center pb-3 border-b border-brand-900">
-                    <span class="font-mono text-white font-bold text-sm">${order.id}</span>
-                    ${statusBadge}
-                </div>
-                <div class="text-xs text-gray-300 mt-3 space-y-1">
-                    <p><strong>حساب الدسكورد:</strong> ${order.discord}</p>
-                    <p><strong>طريقة الدفع:</strong> ${order.method}</p>
-                    <p><strong>إجمالي المبلغ:</strong> $${order.total.toFixed(2)}</p>
-                </div>
-                ${content}
-            `;
-        }
-
-        function renderAdminOrders() {
-            const container = document.getElementById('admin-orders-list');
-            container.innerHTML = '';
-
-            if (orders.length === 0) {
-                container.innerHTML = `<p class="text-center text-gray-500 text-xs py-4">لا توجد طلبات واردة حالياً.</p>`;
-                return;
-            }
-
-            orders.forEach(o => {
-                let statusBadge = '';
-                if (o.status === 'pending') statusBadge = '<span class="text-yellow-400 text-xs font-bold">قيد الانتظار</span>';
-                if (o.status === 'approved') statusBadge = '<span class="text-brand-400 text-xs font-bold">مقبول</span>';
-                if (o.status === 'rejected') statusBadge = '<span class="text-red-400 text-xs font-bold">مرفوض</span>';
-
-                container.innerHTML += `
-                    <div class="bg-darkbg border border-brand-900 p-4 rounded-xl flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="font-mono font-bold text-white text-sm">${o.id}</span>
-                                <span class="text-xs text-gray-400">(${o.date})</span>
-                                ${statusBadge}
-                            </div>
-                            <p class="text-xs text-gray-300"><strong>الدسكورد:</strong> ${o.discord} | <strong>المرجع:</strong> ${o.reference}</p>
-                            <p class="text-xs text-gray-400"><strong>طريقة الدفع:</strong> ${o.method}</p>
-                            <p class="text-xs text-brand-400 font-bold mt-1">المنتجات: ${o.items.map(i => i.name).join(', ')} ($${o.total.toFixed(2)})</p>
-                        </div>
-
-                        ${o.status === 'pending' ? `
-                            <div class="flex gap-2 w-full md:w-auto">
-                                <button onclick="updateOrderStatus('${o.id}', 'approved')" class="bg-brand-600 hover:bg-brand-500 text-black font-black px-4 py-2 rounded-xl text-xs flex-1">
-                                    موافقة وإرسال الكود
-                                </button>
-                                <button onclick="updateOrderStatus('${o.id}', 'rejected')" class="bg-red-600/20 text-red-400 border border-red-600/40 hover:bg-red-600 hover:text-white font-bold px-4 py-2 rounded-xl text-xs flex-1">
-                                    رفض
-                                </button>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-        }
-
-        function updateOrderStatus(orderId, status) {
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                order.status = status;
-                saveOrders();
-                renderAdminOrders();
-            }
-        }
-
-        function handleAddProduct(e) {
-            e.preventDefault();
-            const name = document.getElementById('p-name').value;
-            const price = parseFloat(document.getElementById('p-price').value);
-            const image = document.getElementById('p-image').value;
-            const code = document.getElementById('p-code').value;
-
-            products.unshift({ id: Date.now(), name, price, image, code });
-            saveProducts();
-            renderProducts();
-            e.target.reset();
-            alert('تم نشر المنتج بنجاح!');
-        }
-
-        function openCart() { document.getElementById('cart-modal').classList.remove('hidden'); }
-        function closeCart() { document.getElementById('cart-modal').classList.add('hidden'); }
-
-        function openAdminModal() {
-            if (isAdminLoggedIn) switchView('admin');
-            else document.getElementById('admin-login-modal').classList.remove('hidden');
-        }
-
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            if (document.getElementById('admin-pass-input').value === DEFAULT_PASS) {
-                isAdminLoggedIn = true;
-                document.getElementById('admin-login-modal').classList.add('hidden');
-                switchView('admin');
+        function toggleAdminPanel() {
+            const adminSec = document.getElementById('admin-section');
+            if (adminSec.style.display === 'block') {
+                adminSec.style.display = 'none';
             } else {
-                alert('كلمة المرور خاطئة!');
+                if (!isAdminLoggedIn) {
+                    const pass = prompt("الرجاء إدخال كلمة مرور لوحة التحكم:");
+                    if (pass !== ADMIN_PASSWORD) {
+                        alert("كلمة المرور غير صحيحة!");
+                        return;
+                    }
+                    isAdminLoggedIn = true;
+                }
+                adminSec.style.display = 'block';
+                adminSec.scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            switchView('store');
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
+
+        /* الطلاب */
+        function renderStudents() {
+            const container = document.getElementById('students-container');
+            const query = document.getElementById('std-search')?.value.toLowerCase() || '';
+            container.innerHTML = '';
+
+            const filtered = students.filter(s => s.name.toLowerCase().includes(query) || s.class.toLowerCase().includes(query));
+
+            filtered.forEach((std) => {
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-actions">
+                            <button class="btn-action btn-edit" onclick="prepareEditStudent(${std.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-action btn-delete" onclick="deleteStudent(${std.id})" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="card-header">
+                            <div class="card-icon"><i class="fa-solid fa-user-graduate"></i></div>
+                            <div>
+                                <div class="card-title">${std.name}</div>
+                                <div class="card-sub">${std.class}</div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.9rem; color: #475569;">${std.note || ''}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function saveStudent(e) {
+            e.preventDefault();
+            const id = document.getElementById('std-id').value;
+            const name = document.getElementById('std-name').value;
+            const className = document.getElementById('std-class').value;
+            const note = document.getElementById('std-note').value;
+
+            if (id) {
+                const index = students.findIndex(s => s.id == id);
+                if (index !== -1) {
+                    students[index] = { id: Number(id), name, class: className, note };
+                }
+            } else {
+                students.push({ id: Date.now(), name, class: className, note });
+            }
+
+            localStorage.setItem('alzahoor_students', JSON.stringify(students));
+            renderStudents();
+            resetStudentForm();
+        }
+
+        function prepareEditStudent(id) {
+            const std = students.find(s => s.id === id);
+            if (!std) return;
+            document.getElementById('std-id').value = std.id;
+            document.getElementById('std-name').value = std.name;
+            document.getElementById('std-class').value = std.class;
+            document.getElementById('std-note').value = std.note || '';
+            document.getElementById('std-form-title').innerHTML = `<i class="fa-solid fa-user-pen"></i> تعديل بيانات الطالب`;
+            document.getElementById('std-btn-submit').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات`;
+            
+            if (document.getElementById('admin-section').style.display !== 'block') {
+                toggleAdminPanel();
+            } else {
+                document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetStudentForm() {
+            document.getElementById('student-form').reset();
+            document.getElementById('std-id').value = '';
+            document.getElementById('std-form-title').innerHTML = `<i class="fa-solid fa-user-plus"></i> إضافة طالب جديد`;
+            document.getElementById('std-btn-submit').innerHTML = `<i class="fa-solid fa-plus"></i> حفظ الطالب`;
+        }
+
+        function deleteStudent(id) {
+            if (confirm("هل أنت تأكد من حذف هذا الطالب؟")) {
+                students = students.filter(s => s.id !== id);
+                localStorage.setItem('alzahoor_students', JSON.stringify(students));
+                renderStudents();
+            }
+        }
+
+        /* المعلمون */
+        function renderTeachers() {
+            const container = document.getElementById('teachers-container');
+            const query = document.getElementById('tch-search')?.value.toLowerCase() || '';
+            container.innerHTML = '';
+
+            const filtered = teachers.filter(t => t.name.toLowerCase().includes(query) || t.subject.toLowerCase().includes(query));
+
+            filtered.forEach((tch) => {
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-actions">
+                            <button class="btn-action btn-edit" onclick="prepareEditTeacher(${tch.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-action btn-delete" onclick="deleteTeacher(${tch.id})" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <div class="card-header">
+                            <div class="card-icon" style="background-color: #d1fae5; color: var(--secondary-color);"><i class="fa-solid fa-chalkboard-user"></i></div>
+                            <div>
+                                <div class="card-title">${tch.name}</div>
+                                <div class="card-sub">${tch.subject}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function saveTeacher(e) {
+            e.preventDefault();
+            const id = document.getElementById('tch-id').value;
+            const name = document.getElementById('tch-name').value;
+            const subject = document.getElementById('tch-subject').value;
+
+            if (id) {
+                const index = teachers.findIndex(t => t.id == id);
+                if (index !== -1) {
+                    teachers[index] = { id: Number(id), name, subject };
+                }
+            } else {
+                teachers.push({ id: Date.now(), name, subject });
+            }
+
+            localStorage.setItem('alzahoor_teachers', JSON.stringify(teachers));
+            renderTeachers();
+            resetTeacherForm();
+        }
+
+        function prepareEditTeacher(id) {
+            const tch = teachers.find(t => t.id === id);
+            if (!tch) return;
+            document.getElementById('tch-id').value = tch.id;
+            document.getElementById('tch-name').value = tch.name;
+            document.getElementById('tch-subject').value = tch.subject;
+            document.getElementById('tch-form-title').innerHTML = `<i class="fa-solid fa-user-pen"></i> تعديل بيانات المعلم`;
+            document.getElementById('tch-btn-submit').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات`;
+            
+            if (document.getElementById('admin-section').style.display !== 'block') {
+                toggleAdminPanel();
+            } else {
+                document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetTeacherForm() {
+            document.getElementById('teacher-form').reset();
+            document.getElementById('tch-id').value = '';
+            document.getElementById('tch-form-title').innerHTML = `<i class="fa-solid fa-chalkboard-user"></i> إضافة معلم جديد`;
+            document.getElementById('tch-btn-submit').innerHTML = `<i class="fa-solid fa-plus"></i> حفظ المعلم`;
+        }
+
+        function deleteTeacher(id) {
+            if (confirm("هل أنت تأكد من حذف هذا المعلم؟")) {
+                teachers = teachers.filter(t => t.id !== id);
+                localStorage.setItem('alzahoor_teachers', JSON.stringify(teachers));
+                renderTeachers();
+            }
+        }
+
+        /* الأخبار */
+        function renderNews() {
+            const container = document.getElementById('news-container');
+            container.innerHTML = '';
+            news.forEach((item) => {
+                const imgTag = item.img ? `<img src="${item.img}" class="news-img" alt="صورة الخبر">` : '';
+                container.innerHTML += `
+                    <div class="card">
+                        <div class="card-actions">
+                            <button class="btn-action btn-edit" onclick="prepareEditNews(${item.id})" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button class="btn-action btn-delete" onclick="deleteNews(${item.id})" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        ${imgTag}
+                        <div class="news-date">${item.date}</div>
+                        <div class="card-title" style="margin-bottom: 8px;">${item.title}</div>
+                        <p style="font-size: 0.9rem; color: #475569;">${item.desc}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function saveNews(e) {
+            e.preventDefault();
+            const id = document.getElementById('news-id').value;
+            const title = document.getElementById('news-title').value;
+            const date = document.getElementById('news-date').value;
+            const desc = document.getElementById('news-desc').value;
+            const img = document.getElementById('news-img').value || 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600';
+
+            if (id) {
+                const index = news.findIndex(n => n.id == id);
+                if (index !== -1) {
+                    news[index] = { id: Number(id), title, date, desc, img };
+                }
+            } else {
+                news.push({ id: Date.now(), title, date, desc, img });
+            }
+
+            localStorage.setItem('alzahoor_news', JSON.stringify(news));
+            renderNews();
+            resetNewsForm();
+        }
+
+        function prepareEditNews(id) {
+            const item = news.find(n => n.id === id);
+            if (!item) return;
+            document.getElementById('news-id').value = item.id;
+            document.getElementById('news-title').value = item.title;
+            document.getElementById('news-date').value = item.date;
+            document.getElementById('news-desc').value = item.desc;
+            document.getElementById('news-img').value = item.img || '';
+            document.getElementById('news-form-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل الخبر`;
+            document.getElementById('news-btn-submit').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات`;
+            
+            if (document.getElementById('admin-section').style.display !== 'block') {
+                toggleAdminPanel();
+            } else {
+                document.getElementById('admin-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function resetNewsForm() {
+            document.getElementById('news-form').reset();
+            document.getElementById('news-id').value = '';
+            document.getElementById('news-form-title').innerHTML = `<i class="fa-solid fa-newspaper"></i> إضافة خبر / فعالية`;
+            document.getElementById('news-btn-submit').innerHTML = `<i class="fa-solid fa-plus"></i> نشر الخبر`;
+        }
+
+        function deleteNews(id) {
+            if (confirm("هل أنت تأكد من حذف هذا الخبر؟")) {
+                news = news.filter(n => n.id !== id);
+                localStorage.setItem('alzahoor_news', JSON.stringify(news));
+                renderNews();
+            }
+        }
+
+        // العرض الأولي
+        renderStudents();
+        renderTeachers();
+        renderNews();
     </script>
 </body>
 </html>
